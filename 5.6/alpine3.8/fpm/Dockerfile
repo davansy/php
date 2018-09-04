@@ -19,6 +19,9 @@ ENV PHPIZE_DEPS \
 		pkgconf \
 		re2c
 
+ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
+     && apk update
+
 # persistent / runtime deps
 RUN apk add --no-cache --virtual .persistent-deps \
 		ca-certificates \
@@ -103,12 +106,28 @@ RUN set -xe \
 		libressl-dev \
 		libxml2-dev \
 		sqlite-dev \
+        bzip2-dev \
+        gd-dev \
+        libpng-dev \
+        jpeg-dev \
+        gettext-dev \
+        gmp-dev \
+        imap-dev \
+        icu-dev \
+        openldap-dev \ 
+        libmcrypt-dev \
+        libxslt-dev \
+        libxslt \
+        tidyhtml-dev \
+        unixodbc-dev \
 	\
 	&& export CFLAGS="$PHP_CFLAGS" \
 		CPPFLAGS="$PHP_CPPFLAGS" \
 		LDFLAGS="$PHP_LDFLAGS" \
 	&& docker-php-source extract \
 	&& cd /usr/src/php \
+# https://github.com/htacg/tidy-html5/issues/235
+    && sed -i 's/buffio.h/tidybuffio.h/' ext/tidy/*.c \
 	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
 	&& ./configure \
 		--build="$gnuArch" \
@@ -132,6 +151,34 @@ RUN set -xe \
 		--with-libedit \
 		--with-openssl \
 		--with-zlib \
+        --enable-bcmath \
+        --with-bz2 \
+        --enable-calendar \
+        --enable-exif \
+        --with-gd \
+        --with-gettext \
+        --with-gmp \
+        --with-imap \
+        --enable-intl \
+        --with-ldap \
+        --with-mcrypt \
+        --with-mysql \
+        --with-mysqli \
+        --with-odbcver=unixODBC \
+        --enable-pcntl \
+        --with-pdo-mysql \
+        --with-pdo-odbc \
+        --enable-shmop \
+        --enable-sockets \
+        --enable-sysvmsg \
+        --enable-sysvsem \
+        --enable-sysvshm \
+        --with-tidy \
+        --enable-wddx \
+        --with-xmlrpc \
+        --with-xsl \
+        --enable-zip \
+        --enable-opcache \
 		\
 # bundled pcre does not support JIT on s390x
 # https://manpages.debian.org/stretch/libpcre3-dev/pcrejit.3.en.html#AVAILABILITY_OF_JIT_SUPPORT
