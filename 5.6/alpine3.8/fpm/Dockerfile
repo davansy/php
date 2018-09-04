@@ -120,6 +120,7 @@ RUN set -xe \
         libxslt \
         tidyhtml-dev \
         unixodbc-dev \
+        unixodbc \
 	\
 	&& export CFLAGS="$PHP_CFLAGS" \
 		CPPFLAGS="$PHP_CPPFLAGS" \
@@ -164,10 +165,10 @@ RUN set -xe \
         --with-mcrypt \
         --with-mysql \
         --with-mysqli \
-        --with-odbcver=unixODBC \
+        --with-odbcver \
         --enable-pcntl \
         --with-pdo-mysql \
-        --with-pdo-odbc \
+        --with-unixODBC=shared,/usr \
         --enable-shmop \
         --enable-sockets \
         --enable-sysvmsg \
