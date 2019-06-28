@@ -19,7 +19,7 @@ ENV PHPIZE_DEPS \
 		pkgconf \
 		re2c
 
- RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
      && apk update
 
 # persistent / runtime deps
@@ -110,6 +110,10 @@ RUN set -xe \
         gd-dev \
         libpng-dev \
         jpeg-dev \
+        freetype \
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libwebp-dev \
         gettext-dev \
         gmp-dev \
         imap-dev \
@@ -157,6 +161,10 @@ RUN set -xe \
         --enable-calendar \
         --enable-exif \
         --with-gd \
+        --with-webp-dir=/usr/include/ \
+        --with-freetype-dir=/usr/include/ \
+        --with-jpeg-dir=/usr/include/ \
+        --with-png-dir=/usr/include/ \
         --with-gettext \
         --with-gmp \
         --with-imap \
